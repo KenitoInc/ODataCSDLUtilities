@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33927.249
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliTool", "CliTool\CliTool.csproj", "{D6E526F6-CD2A-4A70-945E-5E25C7580BCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsdlXPathLib", "CsdlXPathLib\CsdlXPathLib.csproj", "{ABDA048C-77D1-4DB5-8C2C-818E165A94BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6E526F6-CD2A-4A70-945E-5E25C7580BCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6E526F6-CD2A-4A70-945E-5E25C7580BCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6E526F6-CD2A-4A70-945E-5E25C7580BCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6E526F6-CD2A-4A70-945E-5E25C7580BCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABDA048C-77D1-4DB5-8C2C-818E165A94BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABDA048C-77D1-4DB5-8C2C-818E165A94BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABDA048C-77D1-4DB5-8C2C-818E165A94BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABDA048C-77D1-4DB5-8C2C-818E165A94BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C846D84-E01F-4A1A-8202-1E080E50E7D8}
+	EndGlobalSection
+EndGlobal

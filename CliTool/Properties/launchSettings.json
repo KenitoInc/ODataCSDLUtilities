@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CliTool": {
+      "commandName": "Project",
+      "commandLineArgs": "getfile --file \"trippin.xml\""
+    }
+  }
+}
