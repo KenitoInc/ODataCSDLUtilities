@@ -59,7 +59,7 @@ namespace CsdlXPathLib
                     string type = string.Empty;
                     bool nullable = true;
 
-                    if (results.Current.MoveToAttribute(XmlConstants.Name, "default"))
+                    if (results.Current.MoveToAttribute(XmlConstants.Name, ""))
                     {
                         name = results.Current.Value;
                     }
@@ -99,6 +99,62 @@ namespace CsdlXPathLib
             };
 
             return entityType;
+        }
+
+        public List<ComplexType> GetComplexTypes()
+        {
+            string query = string.Format($"//default:ComplexType");
+            XPathNodeIterator results = navigator.Select(query, this.namespaceManager);
+            List<ComplexType> complexTypes = new List<ComplexType>();
+
+            if (results.Count > 0)
+            {
+                while (results.MoveNext())
+                {
+                    string name = string.Empty;
+                    string type = string.Empty;
+                    bool nullable = true;
+
+                    if (results.Current.MoveToAttribute(XmlConstants.Name, ""))
+                    {
+                        name = results.Current.Value;
+                    }
+
+                    ComplexType complexType = new ComplexType()
+                    {
+                        Name = name
+                    };
+
+                    complexTypes.Add(complexType);
+
+                    results.Current.MoveToParent();
+                }
+            }
+
+            return complexTypes;
+        }
+
+        public ComplexType GetComplexType(string complexTypeName)
+        {
+            string query = string.Format($"//default:ComplexType[@Name='{complexTypeName}']");
+            XPathNodeIterator results = navigator.Select(query, this.namespaceManager);
+
+            results.MoveNext();
+            string name = string.Empty;
+            string type = string.Empty;
+            bool nullable = true;
+
+            if (results.Current.MoveToAttribute(XmlConstants.Name, ""))
+            {
+                name = results.Current.Value;
+            }
+
+            ComplexType complexType = new ComplexType()
+            {
+                Name = name
+            };
+
+            return complexType;
         }
 
         public List<EdmProperty> GetProperties(string entityTypeName)
