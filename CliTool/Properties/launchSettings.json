@@ -2,7 +2,7 @@
   "profiles": {
     "CliTool": {
       "commandName": "Project",
-      "commandLineArgs": "show entitytypes --file https://services.odata.org/TripPinRESTierService/(S(gkj2dkjofdtevc5ac1k11v2f))/$metadata"
+      "commandLineArgs": ""
     }
   }
 }
