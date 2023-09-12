@@ -51,6 +51,7 @@ namespace CsdlXPathLib
             XPathNodeIterator results = navigator.Select(query, this.namespaceManager);
             List<EntityType> entityTypes = new List<EntityType>();
 
+            //use the XPathNodeIterator to create EntityType objects.
             if (results.Count > 0)
             {
                 while (results.MoveNext())
@@ -84,7 +85,7 @@ namespace CsdlXPathLib
             results.MoveNext();
             string name = string.Empty;
 
-            if (results.Current.MoveToAttribute(XmlConstants.Name, "default"))
+            if (results.Current.MoveToAttribute(XmlConstants.Name, ""))
             {
                 name = results.Current.Value;
             }
@@ -156,7 +157,7 @@ namespace CsdlXPathLib
 
             List<EdmProperty> properties = new List<EdmProperty>();
 
-            //use the XPathNodeIterator to display the results
+            //use the XPathNodeIterator to create EdmProperty objects.
             if (results.Count > 0)
             {
                 while (results.MoveNext())
@@ -165,15 +166,15 @@ namespace CsdlXPathLib
                     string type = string.Empty;
                     bool nullable = true;
 
-                    if (results.Current.MoveToAttribute(XmlConstants.Name, "default"))
+                    if (results.Current.MoveToAttribute(XmlConstants.Name, ""))
                     {
                         name = results.Current.Value;
                     }
-                    if (results.Current.MoveToAttribute(XmlConstants.Type, "default"))
+                    if (results.Current.MoveToAttribute(XmlConstants.Type, ""))
                     {
                         type = results.Current.Value;
                     }
-                    if (results.Current.MoveToAttribute(XmlConstants.Nullable, "default"))
+                    if (results.Current.MoveToAttribute(XmlConstants.Nullable, ""))
                     {
                         nullable = ToBoolean(results.Current.Value);
                         

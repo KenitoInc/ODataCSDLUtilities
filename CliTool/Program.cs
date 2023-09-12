@@ -1,5 +1,9 @@
-﻿using System;
+﻿using CliTool.Commands;
+using CsdlXPathLib;
+using CsdlXPathLib.EdmTypes;
+using System;
 using System.CommandLine;
+using System.Runtime.CompilerServices;
 
 namespace CliTool
 {
@@ -7,45 +11,49 @@ namespace CliTool
     {
         public static async Task<int> Main(string[] args)
         {
-            string filePath = null;
             ShowCommand showCommand = new ShowCommand();
-            LoadCommand loadCommand = new LoadCommand();
 
-            var filePathOption = new Option<string>("--file") { IsRequired = true };
-            var getFileCommand = new Command("getfile","");
-            getFileCommand.Add(filePathOption);
-
-            Command entityTypesCommand = new Command("entitytypes", "");
-            Command complexTypesCommand = new Command("complextypes", "");
-            Command enumsCommand = new Command("enums", "");
-            Command functionsCommand = new Command("functions", "");
-            Command actionsCommand = new Command("actions", "");
-            Command entitySetsCommand = new Command("entitysets", "");
-            Command singletonsCommand = new Command("singletons", "");
-            Command actionimportsCommand = new Command("actionimports", "");
-            Command functionimportsCommand = new Command("functionimports", "");
+            EntityTypesCommand entityTypesCommand = new EntityTypesCommand();
+            EntityTypeCommand entityTypeCommand = new EntityTypeCommand();
+            ComplexTypesCommand complexTypesCommand = new ComplexTypesCommand();
+            ComplexTypeCommand complexTypeCommand = new ComplexTypeCommand();
+            EnumTypesCommand enumsCommand = new EnumTypesCommand();
+            EnumTypeCommand enumCommand = new EnumTypeCommand();
+            FunctionsCommand functionsCommand = new FunctionsCommand();
+            FunctionCommand functionCommand = new FunctionCommand();
+            ActionsCommand actionsCommand = new ActionsCommand();
+            ActionCommand actionCommand = new ActionCommand();
+            EntitySetsCommand entitySetsCommand = new EntitySetsCommand();
+            EntitySetCommand entitySetCommand = new EntitySetCommand();
+            SingletonsCommand singletonsCommand = new SingletonsCommand();
+            SingletonCommand singletonCommand = new SingletonCommand();
+            ActionImportsCommand actionimportsCommand = new ActionImportsCommand();
+            ActionImportCommand actionimportCommand = new ActionImportCommand();
+            FunctionImportsCommand functionimportsCommand = new FunctionImportsCommand();
+            FunctionImportCommand functionimportCommand = new FunctionImportCommand();
 
             showCommand.Add(entityTypesCommand);
+            showCommand.Add(entityTypeCommand);
             showCommand.Add(complexTypesCommand);
+            showCommand.Add(complexTypeCommand);
             showCommand.Add(enumsCommand);
+            showCommand.Add(enumCommand);
             showCommand.Add(functionsCommand);
+            showCommand.Add(functionCommand);
             showCommand.Add(actionsCommand);
+            showCommand.Add(actionCommand);
             showCommand.Add(entitySetsCommand);
+            showCommand.Add(entitySetCommand);
             showCommand.Add(singletonsCommand);
+            showCommand.Add(singletonCommand);
             showCommand.Add(actionimportsCommand);
+            showCommand.Add(actionimportCommand);
             showCommand.Add(functionimportsCommand);
+            showCommand.Add(functionimportCommand);
             
             RootCommand app = new RootCommand {
-                showCommand,
-                loadCommand,
-                getFileCommand
+                showCommand
             };
-
-            getFileCommand.SetHandler((path) =>
-                {
-                    filePath = path;
-                },
-                filePathOption);
 
             return await app.InvokeAsync(args);
         }
