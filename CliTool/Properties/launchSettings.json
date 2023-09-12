@@ -1,8 +1,7 @@
 {
   "profiles": {
     "CliTool": {
-      "commandName": "Project",
-      "commandLineArgs": ""
+      "commandName": "Project"
     }
   }
 }
