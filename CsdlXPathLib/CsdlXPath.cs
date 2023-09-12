@@ -56,8 +56,6 @@ namespace CsdlXPathLib
                 while (results.MoveNext())
                 {
                     string name = string.Empty;
-                    string type = string.Empty;
-                    bool nullable = true;
 
                     if (results.Current.MoveToAttribute(XmlConstants.Name, ""))
                     {
@@ -85,8 +83,6 @@ namespace CsdlXPathLib
 
             results.MoveNext();
             string name = string.Empty;
-            string type = string.Empty;
-            bool nullable = true;
 
             if (results.Current.MoveToAttribute(XmlConstants.Name, "default"))
             {
@@ -112,8 +108,6 @@ namespace CsdlXPathLib
                 while (results.MoveNext())
                 {
                     string name = string.Empty;
-                    string type = string.Empty;
-                    bool nullable = true;
 
                     if (results.Current.MoveToAttribute(XmlConstants.Name, ""))
                     {
@@ -141,8 +135,6 @@ namespace CsdlXPathLib
 
             results.MoveNext();
             string name = string.Empty;
-            string type = string.Empty;
-            bool nullable = true;
 
             if (results.Current.MoveToAttribute(XmlConstants.Name, ""))
             {
