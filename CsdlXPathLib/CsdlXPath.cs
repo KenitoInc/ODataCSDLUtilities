@@ -252,9 +252,19 @@ namespace CsdlXPathLib
             return results;
         }
 
-        public List<EdmProperty> GetProperties(string entityTypeName)
+        public List<EdmProperty> GetProperties(string entityTypeName, bool isEntity = true)
         {
-            string query = string.Format($"//default:EntityType[@Name='{entityTypeName}']/default:Property");
+            string query = string.Empty;
+
+            if (isEntity)
+            {
+                query = string.Format($"//default:EntityType[@Name='{entityTypeName}']/default:Property");
+            }
+            else
+            {
+                query = string.Format($"//default:ComplexType[@Name='{entityTypeName}']/default:Property");
+            }
+
             XPathNodeIterator results = navigator.Select(query, this.namespaceManager);
 
             List<EdmProperty> properties = new List<EdmProperty>();

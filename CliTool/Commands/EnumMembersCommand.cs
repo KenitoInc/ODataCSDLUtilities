@@ -12,8 +12,6 @@ namespace CliTool.Commands
 {
     public class EnumMembersCommand : Command
     {
-        private string nameOptionValue;
-
         public EnumMembersCommand()
             : base("enummembers", "command to show an enum's members in the OData csdl xml file.")
         {

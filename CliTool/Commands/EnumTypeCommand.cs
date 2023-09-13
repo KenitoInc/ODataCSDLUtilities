@@ -6,8 +6,6 @@ namespace CliTool.Commands
 {
     public class EnumTypeCommand : Command
     {
-        private string nameOptionValue;
-
         public EnumTypeCommand()
             : base("enumtype", "command to show an enum type in the OData csdl xml file.")
         {
