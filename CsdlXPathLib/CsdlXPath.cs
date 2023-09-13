@@ -1,11 +1,5 @@
 ﻿using CsdlXPathLib.EdmTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.XPath;
 
 namespace CsdlXPathLib
@@ -218,37 +212,40 @@ namespace CsdlXPathLib
             XPathNodeIterator nodes = navigator.Select(query, this.namespaceManager);
 
             List<EnumMember> results = new List<EnumMember>();
-
             if (nodes.Count > 0)
             {
                 nodes.MoveNext();
 
-                    if (nodes.Current.MoveToAttribute(XmlConstants.Name, ""))
+                if (nodes.Current.MoveToAttribute(XmlConstants.Name, ""))
+                {
+                    string name = string.Empty;
+                    string value = string.Empty;
+                    nodes.Current.MoveToParent(); // <EnumType  ...>*/;
+                    nodes.Current.MoveToFirstChild(); // <Member  ...>*/
+                    do
                     {
-                        EnumMember member = new EnumMember();
-                        nodes.Current.MoveToParent();
-                        nodes.Current.MoveToFirstChild();
-                        do
+                        if (nodes.Current.MoveToAttribute(XmlConstants.Name, ""))
                         {
-                            if (nodes.Current.MoveToAttribute(XmlConstants.Name, ""))
-                            {
-                                member.Name = nodes.Current.Value;
-                                nodes.Current.MoveToParent();
-                            }
-
-                            if (nodes.Current.MoveToAttribute(XmlConstants.Value, ""))
-                            {
-                                member.Value = nodes.Current.Value;
-                            }
-                        results.Add(member);
-
-                        nodes.Current.MoveToParent();
-            
+                            name = nodes.Current.Value;
+                            nodes.Current.MoveToParent();// <Member  ...>*/
                         }
-                        
-                    while (nodes.Current.MoveToNext());
-                    }
+
+                        if (nodes.Current.MoveToAttribute(XmlConstants.Value, ""))
+                        {
+                            value = nodes.Current.Value;
+                        }
+
+                        EnumMember member = new EnumMember()
+                        {
+                            Name = name,
+                            Value = value
+                        };
+                        results.Add(member);
+                        nodes.Current.MoveToParent();// <Member  ...>*/
+                    } while (nodes.Current.MoveToNext());
+                }
             }
+
             return results;
         }
 
