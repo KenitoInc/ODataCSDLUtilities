@@ -19,6 +19,7 @@ namespace CliTool
             ComplexTypeCommand complexTypeCommand = new ComplexTypeCommand();
             EnumTypesCommand enumsCommand = new EnumTypesCommand();
             EnumTypeCommand enumCommand = new EnumTypeCommand();
+            EnumMembersCommand enummembersCommand = new EnumMembersCommand();
             FunctionsCommand functionsCommand = new FunctionsCommand();
             FunctionCommand functionCommand = new FunctionCommand();
             ActionsCommand actionsCommand = new ActionsCommand();
@@ -38,6 +39,7 @@ namespace CliTool
             showCommand.Add(complexTypeCommand);
             showCommand.Add(enumsCommand);
             showCommand.Add(enumCommand);
+            showCommand.Add(enummembersCommand);
             showCommand.Add(functionsCommand);
             showCommand.Add(functionCommand);
             showCommand.Add(actionsCommand);

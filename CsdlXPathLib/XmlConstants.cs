@@ -10,6 +10,7 @@ namespace CsdlXPathLib
     {
         public const string Name = "Name";
         public const string Type = "Type";
+        public const string Value = "Value";
         public const string Nullable = "Nullable";
         public const string BaseType = "BaseType";
         public const string IsBound = "IsBound";
