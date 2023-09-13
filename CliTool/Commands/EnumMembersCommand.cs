@@ -1,4 +1,5 @@
-﻿using CsdlXPathLib.EdmTypes;
+﻿using CliTool;
+using CsdlXPathLib.EdmTypes;
 using CsdlXPathLib;
 using System;
 using System.Collections.Generic;
@@ -9,19 +10,22 @@ using System.Threading.Tasks;
 
 namespace CliTool.Commands
 {
-    internal class ComplexTypeCommand : Command
+    public class EnumMembersCommand : Command
     {
-        public ComplexTypeCommand()
-            : base("complextype", "command to show a complex type in the OData csdl xml file.")
+        private string nameOptionValue;
+
+        public EnumMembersCommand()
+            : base("enummembers", "command to show an enum's members in the OData csdl xml file.")
         {
             Option<string> nameOption = new Option<string>(new[] { "--name", "-n" })
             {
                 Name = "name",
-                Description = "The name of the complex type.",
+                Description = "The name of the enum type.",
                 IsRequired = true
             };
 
             Add(nameOption);
+
             this.SetHandler((filePathOptionValue, nameOptionValue) =>
             {
                 InvokeCommand(filePathOptionValue, nameOptionValue);
@@ -47,10 +51,14 @@ namespace CliTool.Commands
             }
 
             CsdlXPath csdlXPath = new CsdlXPath(filePath);
-            ComplexType complexType = csdlXPath.GetComplexType(name);
+            List<EnumMember> enumMembers = csdlXPath.GetEnumMembers(name);
 
-            Console.WriteLine("***Complex Type***");
-            Console.WriteLine($"{complexType.Name}");
+            Console.WriteLine("***Enum Members***");
+
+            foreach (EnumMember enumMember in enumMembers)
+            {
+                Console.WriteLine($" EnumMember Name: {enumMember.Name}, Value: {enumMember.Value}");
+            }
         }
     }
 }
