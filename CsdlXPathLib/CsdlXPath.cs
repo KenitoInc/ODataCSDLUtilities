@@ -87,7 +87,7 @@ namespace CsdlXPathLib
             string name = string.Empty;
             string key = string.Empty;
             if (nodes.Current.MoveToAttribute(XmlConstants.Name, ""))
-             {
+            {
                 name = nodes.Current.Value;
             }
 
@@ -96,9 +96,9 @@ namespace CsdlXPathLib
                 Name = name
             };
             
-            nodes.Current.MoveToParent();
-            nodes.Current.MoveToFirstChild();
-            nodes.Current.MoveToFirstChild();
+            nodes.Current.MoveToParent(); // <EntityType  ...>*/
+            nodes.Current.MoveToFirstChild(); // <Key  ...>*/
+            nodes.Current.MoveToFirstChild(); // <PropertyRef   ...>*/
             if (nodes.Current.MoveToAttribute(XmlConstants.Name, ""))
             {
                 key = nodes.Current.Value;
@@ -210,6 +210,46 @@ namespace CsdlXPathLib
             };
 
             return enumType;
+        }
+
+        public List<EnumMember> GetEnumMembers(string enumTypeName)
+        {
+            string query = string.Format($"//default:EnumType[@Name='{enumTypeName}']");
+            XPathNodeIterator nodes = navigator.Select(query, this.namespaceManager);
+
+            List<EnumMember> results = new List<EnumMember>();
+
+            if (nodes.Count > 0)
+            {
+                nodes.MoveNext();
+
+                    if (nodes.Current.MoveToAttribute(XmlConstants.Name, ""))
+                    {
+                        EnumMember member = new EnumMember();
+                        nodes.Current.MoveToParent();
+                        nodes.Current.MoveToFirstChild();
+                        do
+                        {
+                            if (nodes.Current.MoveToAttribute(XmlConstants.Name, ""))
+                            {
+                                member.Name = nodes.Current.Value;
+                                nodes.Current.MoveToParent();
+                            }
+
+                            if (nodes.Current.MoveToAttribute(XmlConstants.Value, ""))
+                            {
+                                member.Value = nodes.Current.Value;
+                            }
+                        results.Add(member);
+
+                        nodes.Current.MoveToParent();
+            
+                        }
+                        
+                    while (nodes.Current.MoveToNext());
+                    }
+            }
+            return results;
         }
 
         public List<EdmProperty> GetProperties(string entityTypeName)

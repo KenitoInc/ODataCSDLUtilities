@@ -51,10 +51,7 @@ namespace CliTool.Commands
             CsdlXPath csdlXPath = new CsdlXPath(filePath);
             EntityType entityType = csdlXPath.GetEntityType(name);
 
-            Console.WriteLine("***Entity Type***");
-            Console.WriteLine($"{entityType.Name}\n");
-            Console.WriteLine("***Key***");
-            Console.WriteLine($"{entityType.Key}");
+            Console.WriteLine($"EntityType Name: {entityType.Name}, Key: {entityType.Key}");
         }
     }
 }

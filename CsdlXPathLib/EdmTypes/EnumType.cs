@@ -10,6 +10,6 @@ namespace CsdlXPathLib.EdmTypes
     {
         public string Key { get; set; }
         public string Name { get; set; }
-        public List<EdmMember> Members { get; set; }
+        public List<EnumMember> Members { get; set; }
     }
 }

@@ -51,15 +51,14 @@ namespace CliTool.Commands
             }
 
             CsdlXPath csdlXPath = new CsdlXPath(filePath);
-            /*List<EdmMember> enumMembers = csdlXPath.GetEnumMembers(name);
+            List<EnumMember> enumMembers = csdlXPath.GetEnumMembers(name);
 
-            Console.WriteLine("***Enum Types***");
+            Console.WriteLine("***Enum Members***");
 
-            foreach (EdmMember enumMember in enumMembers)
+            foreach (EnumMember enumMember in enumMembers)
             {
-                Console.WriteLine($"{enumMember.Name}");
-                Console.WriteLine($"{enumMember.Value}");
-            }*/
+                Console.WriteLine($" EnumMember Name: {enumMember.Name}, Value: {enumMember.Value}");
+            }
         }
     }
 }
