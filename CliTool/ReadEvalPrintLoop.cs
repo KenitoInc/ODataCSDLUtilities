@@ -36,7 +36,11 @@ namespace CliTool
                 foreach (Command cmd in this.cache.Commands)
                 {
                     string str = cmd.Name;
-                    breadcrumb = string.Concat(str, "/", breadcrumb);
+                    if (cmd is SelectCommand)
+                    {
+                        str = this.cache.Select;
+                    }
+                    breadcrumb = string.Concat(str, "\\", breadcrumb);
                 }
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(breadcrumb);
@@ -74,12 +78,11 @@ namespace CliTool
 
             if (IsSelectCommand(parseResult.CommandResult))
             {
-                this.cache.Select = parseResult.GetValueForOption(Utils.SelectNameOption)?.ToString();
+                HandleSelect(parseResult);
             }
             else
             {
                 commandText = ApplyCachedNamedOption(commandText, parseResult);
-                this.cache.Commands.Push(parseResult.CommandResult.Command);
             }
 
             if (parseResult.HasOption(Utils.FilePathOption))
@@ -91,6 +94,8 @@ namespace CliTool
                 commandText = string.Concat(commandText, " --file ", this.cache.File);
             }
 
+            AddCommandToCache(parseResult.CommandResult.Command);
+
             return commandText;
         }
 
@@ -100,27 +105,57 @@ namespace CliTool
             {
                 if(!parseResult.HasOption(Utils.SelectNameOption))
                 {
-                    Command cmd;
-                    this.cache.Commands.TryPeek(out cmd);
-
-                    while (cmd is PropertiesCommand)
+                    foreach (Command cmd in this.cache.Commands)
                     {
-                        this.cache.Commands.Pop();
-                        this.cache.Commands.TryPeek(out cmd);
-                    }
-
-                    if (cmd is EntityTypesCommand)
-                    {
-                        commandText = string.Concat(commandText, " --entitytype ", this.cache.Select);
-                    }
-                    if (cmd is ComplexTypesCommand)
-                    {
-                        commandText = string.Concat(commandText, " --complextype ", this.cache.Select);
+                        if (cmd is EntityTypesCommand)
+                        {
+                            commandText = string.Concat(commandText, " --entitytype ", this.cache.Select);
+                            break;
+                        }
+                        if (cmd is ComplexTypesCommand)
+                        {
+                            commandText = string.Concat(commandText, " --complextype ", this.cache.Select);
+                            break;
+                        }
                     }
                 }
             }
 
             return commandText;
+        }
+
+        private void AddCommandToCache(Command command)
+        {
+            if (
+                command is PropertiesCommand ||
+                command is EnumMembersCommand
+                )
+            {
+                return;
+            }
+
+            this.cache.Commands.Push(command);
+        }
+
+        private void HandleSelect(ParseResult parseResult)
+        {
+            Command command;
+            this.cache.Commands.TryPeek(out command);
+
+            if (
+                command is EntityTypesCommand ||
+                command is ComplexTypesCommand ||
+                command is EnumTypesCommand ||
+                command is FunctionsCommand ||
+                command is ActionCommand ||
+                command is FunctionImportsCommand ||
+                command is ActionImportsCommand ||
+                command is EntitySetsCommand ||
+                command is SingletonsCommand
+                )
+            {
+                this.cache.Select = parseResult.GetValueForOption(Utils.SelectNameOption)?.ToString();
+            }
         }
 
         private bool IsSelectCommand(CommandResult commandResult)
