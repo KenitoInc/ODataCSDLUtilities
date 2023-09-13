@@ -14,21 +14,8 @@ namespace CliTool
         {
             RootCommand app = Utils.SetUpCommands();
             Parser parser = new Parser(app);
-            //var result = parser.Parse(args);
-            //var result2 = parser.Parse("show entitytype --name Person --file trippin.xml");
 
-
-            //return await parser.InvokeAsync(args);
             new ReadEvalPrintLoop(parser).Run();
         }
-
-        //private static ParseResult ParseArgs(string[] args)
-        //{
-        //    Parser parser = new Parser(app);
-
-        //    var result = parser.Parse(args);
-
-        //    return result;
-        //}
     }
 }

@@ -19,9 +19,17 @@ namespace CliTool
             IsRequired = true
         };
 
+        public static Option<string> SelectNameOption = new Option<string>(new[] { "--name", "-n" })
+        {
+            Name = "name",
+            Description = "The name of the element.",
+            IsRequired = true
+        };
+
         public static RootCommand SetUpCommands()
         {
             ShowCommand showCommand = new ShowCommand();
+            SelectCommand selectCommand = new SelectCommand();
 
             EntityTypesCommand entityTypesCommand = new EntityTypesCommand();
             EntityTypeCommand entityTypeCommand = new EntityTypeCommand();
@@ -41,6 +49,7 @@ namespace CliTool
             ActionImportCommand actionimportCommand = new ActionImportCommand();
             FunctionImportsCommand functionimportsCommand = new FunctionImportsCommand();
             FunctionImportCommand functionimportCommand = new FunctionImportCommand();
+            PropertiesCommand propertiesCommand = new PropertiesCommand();
 
             showCommand.Add(entityTypesCommand);
             showCommand.Add(entityTypeCommand);
@@ -60,9 +69,11 @@ namespace CliTool
             showCommand.Add(actionimportCommand);
             showCommand.Add(functionimportsCommand);
             showCommand.Add(functionimportCommand);
+            showCommand.Add(propertiesCommand);
 
             RootCommand app = new RootCommand {
-                showCommand
+                showCommand,
+                selectCommand
             };
 
             return app;

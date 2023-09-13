@@ -35,7 +35,9 @@ namespace CliTool.Commands
             CsdlXPath csdlXPath = new CsdlXPath(filePath);
             List<EntityType> entityTypes = csdlXPath.GetEntityTypes();
 
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("***Entity Types***");
+            Console.ForegroundColor = ConsoleColor.Green;
 
             foreach (EntityType entityType in entityTypes)
             {
