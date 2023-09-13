@@ -54,24 +54,30 @@ namespace CliTool.Commands
             {
                 List<EdmProperty> properties = csdlXPath.GetProperties(entityType);
 
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("***Properties***");
+                Console.ForegroundColor = ConsoleColor.Green;
 
                 foreach (EdmProperty edmProperty in properties)
                 {
                     Console.WriteLine($"Name: {edmProperty.Name}, Type: {edmProperty.Type}, Nullable: {edmProperty.Nullable}");
                 }
+                Console.ForegroundColor = ConsoleColor.White;
             }
 
-            if (!string.IsNullOrEmpty(entityType))
+            if (!string.IsNullOrEmpty(complexType))
             {
-                List<EdmProperty> properties = csdlXPath.GetProperties(entityType);
+                List<EdmProperty> properties = csdlXPath.GetProperties(complexType,/* isEntity */ false);
 
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("***Properties***");
+                Console.ForegroundColor = ConsoleColor.Green;
 
                 foreach (EdmProperty edmProperty in properties)
                 {
                     Console.WriteLine($"Name: {edmProperty.Name}, Type: {edmProperty.Type}, Nullable: {edmProperty.Nullable}");
                 }
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
     }

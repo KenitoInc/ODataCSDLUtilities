@@ -31,13 +31,34 @@ namespace CliTool
             {
                 Console.WriteLine(string.Empty);
                 Console.ForegroundColor = ConsoleColor.White;
+                string breadcrumb = ">";
+
+                foreach (Command cmd in this.cache.Commands)
+                {
+                    string str = cmd.Name;
+                    breadcrumb = string.Concat(str, "/", breadcrumb);
+                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(breadcrumb);
+                Console.ForegroundColor= ConsoleColor.White;
+
                 string commandText = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(commandText))
+                {
+                    continue;
+                }
 
                 if (commandText == "exit") { break; }
                 if (commandText == "clear") { Console.Clear(); continue; }
                 if (new[] { "help", "#help", "?" }.Contains(commandText))
                 {
                     PrintHelp();
+                    continue;
+                }
+                if (commandText == "back")
+                {
+                    this.cache.Commands.Pop();
                     continue;
                 }
 
@@ -58,7 +79,7 @@ namespace CliTool
             else
             {
                 commandText = ApplyCachedNamedOption(commandText, parseResult);
-                this.cache.Command = parseResult.CommandResult.Command;
+                this.cache.Commands.Push(parseResult.CommandResult.Command);
             }
 
             if (parseResult.HasOption(Utils.FilePathOption))
@@ -79,11 +100,20 @@ namespace CliTool
             {
                 if(!parseResult.HasOption(Utils.SelectNameOption))
                 {
-                    if (this.cache.Command is EntityTypesCommand)
+                    Command cmd;
+                    this.cache.Commands.TryPeek(out cmd);
+
+                    while (cmd is PropertiesCommand)
+                    {
+                        this.cache.Commands.Pop();
+                        this.cache.Commands.TryPeek(out cmd);
+                    }
+
+                    if (cmd is EntityTypesCommand)
                     {
                         commandText = string.Concat(commandText, " --entitytype ", this.cache.Select);
                     }
-                    if (this.cache.Command is ComplexTypesCommand)
+                    if (cmd is ComplexTypesCommand)
                     {
                         commandText = string.Concat(commandText, " --complextype ", this.cache.Select);
                     }

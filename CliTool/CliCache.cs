@@ -9,10 +9,20 @@ namespace CliTool
 {
     internal class CliCache
     {
-        public CliCache() { }
+        private Stack<Command> commands;
+        public CliCache()
+        {
+            commands = new Stack<Command>();
+        }
 
         public string Select { get; set; }
         public string File { get; set; }
-        public Command Command { get; set; }
+        public Stack<Command> Commands
+        {
+            get
+            {
+                return commands;
+            }
+        }
     }
 }

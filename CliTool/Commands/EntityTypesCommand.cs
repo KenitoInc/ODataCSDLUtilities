@@ -43,6 +43,7 @@ namespace CliTool.Commands
             {
                 Console.WriteLine($"{entityType.Name}");
             }
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
