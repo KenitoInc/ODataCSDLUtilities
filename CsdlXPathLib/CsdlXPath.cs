@@ -102,7 +102,6 @@ namespace CsdlXPathLib
             if (nodes.Current.MoveToAttribute(XmlConstants.Name, ""))
             {
                 key = nodes.Current.Value;
-                Console.WriteLine(nodes.CurrentPosition);
             }
             entityType.Key = key;
 
