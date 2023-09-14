@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Parsing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace CliTool
                 }
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(breadcrumb);
-                Console.ForegroundColor= ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.White;
 
                 string commandText = Console.ReadLine();
 
@@ -66,39 +67,73 @@ namespace CliTool
                     continue;
                 }
 
-                commandText = HandleInput(commandText);
+                string updatedCommandText;
+                bool isInputValid = HandleInput(commandText, out updatedCommandText);
 
-                int code = parser.Invoke(commandText);
+                if (isInputValid)
+                {
+                    parser.Invoke(updatedCommandText);
+                }
             }
         }
 
-        private string HandleInput(string commandText)
+        private bool HandleInput(string commandText, out string command)
         {
+            command = commandText;
             ParseResult parseResult = parser.Parse(commandText);
+
+            bool isValidFile = HandleFileOption(parseResult, commandText, out command);
+
+            if (!isValidFile)
+            {
+                Utils.WriteErrorMessage("File path has not been set in this session");
+
+                return false;
+            }
+
+            commandText = command;
 
             if (IsSelectCommand(parseResult.CommandResult))
             {
-                HandleSelect(parseResult);
-            }
-            else
-            {
-                commandText = ApplyCachedNamedOption(commandText, parseResult);
-            }
+                bool isSelectValid = HandleSelect(parseResult);
 
-            if (parseResult.HasOption(Utils.FilePathOption))
-            {
-                this.cache.File = parseResult.GetValueForOption(Utils.FilePathOption)?.ToString();
+                if (!isSelectValid)
+                {
+                    return false;
+                }
             }
             else
             {
-                // TODO: check if file is in cache
-                // Console message if file is missing
-                commandText = string.Concat(commandText, " --file ", this.cache.File);
+                command = ApplyCachedNamedOption(commandText, parseResult);
             }
 
             AddCommandToCache(parseResult.CommandResult.Command);
 
-            return commandText;
+            return true;
+        }
+
+        private bool HandleFileOption(ParseResult parseResult, string commandText, out string command)
+        {
+            command = commandText;
+            if (parseResult.HasOption(Utils.FilePathOption))
+            {
+                this.cache.File = parseResult.GetValueForOption(Utils.FilePathOption)?.ToString();
+
+                return true;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(this.cache.File))
+                {
+                    return false;
+                }
+                else
+                {
+                    command = string.Concat(commandText, " --file ", this.cache.File);
+
+                    return true;
+                }
+            }
         }
 
         private string ApplyCachedNamedOption(string commandText, ParseResult parseResult)
@@ -129,17 +164,22 @@ namespace CliTool
         private void AddCommandToCache(Command command)
         {
             if (
-                command is PropertiesCommand ||
-                command is EnumMembersCommand
+                command is EntityTypesCommand ||
+                command is ComplexTypesCommand ||
+                command is SelectCommand
                 )
             {
-                return;
-            }
+                Command cmd;
+                this.cache.Commands.TryPeek(out cmd);
 
-            this.cache.Commands.Push(command);
+                if (cmd != command)
+                {
+                    this.cache.Commands.Push(command);
+                }
+            }
         }
 
-        private void HandleSelect(ParseResult parseResult)
+        private bool HandleSelect(ParseResult parseResult)
         {
             Command command;
             this.cache.Commands.TryPeek(out command);
@@ -156,12 +196,23 @@ namespace CliTool
                 command is SingletonsCommand
                 )
             {
-                this.cache.Select = parseResult.GetValueForOption(Utils.SelectNameOption)?.ToString();
+                if (parseResult.HasOption(Utils.SelectNameOption))
+                {
+                    this.cache.Select = parseResult.GetValueForOption(Utils.SelectNameOption)?.ToString();
+
+                    return true;
+                }
+                else
+                {
+                    Utils.WriteErrorMessage("select command doesn't have --name option");
+                }
             }
             else
             {
-                // TODO: Console message
+                Utils.WriteErrorMessage("select command cannot be applied");
             }
+
+            return false;
         }
 
         private bool IsSelectCommand(CommandResult commandResult)

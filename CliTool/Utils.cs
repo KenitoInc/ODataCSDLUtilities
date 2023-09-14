@@ -78,5 +78,12 @@ namespace CliTool
 
             return app;
         }
+
+        public static void WriteErrorMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }
