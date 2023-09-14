@@ -1,4 +1,5 @@
 ﻿using CsdlXPathLib.EdmTypes;
+using System.Reflection.Metadata;
 using System.Xml;
 using System.Xml.XPath;
 
@@ -6,13 +7,24 @@ namespace CsdlXPathLib
 {
     public class CsdlXPath
     {
-        private XPathDocument document;
+        private XPathDocument xPathDocument;
+        private XmlDocument xmlDocument;
         private XPathNavigator navigator;
         private XmlNamespaceManager namespaceManager;
-        public CsdlXPath(string filePath)
+        public CsdlXPath(string filePath, bool isReadOnly=true)
         {
-            document = new XPathDocument(filePath);
-            navigator = document.CreateNavigator();
+            if (isReadOnly)
+            {
+                xPathDocument = new XPathDocument(filePath);
+                navigator = xPathDocument.CreateNavigator();
+            }
+            else
+            {
+                xmlDocument = new XmlDocument();
+                xmlDocument.Load(filePath);
+                navigator = xmlDocument.CreateNavigator();
+            }
+
             NavigateToSchemaNode();
             InitializeNamespaceManager();
         }
@@ -98,6 +110,25 @@ namespace CsdlXPathLib
                 key = nodes.Current.Value;
             }
             entityType.Key = key;
+
+            return entityType;
+        }
+
+        public EntityType AddEntityType(EntityType entityType)
+        {
+            string query = string.Format($"//default:EntityType");
+            XPathNodeIterator nodes = navigator.Select(query, this.namespaceManager);
+
+            var navg = nodes.Current;
+            var writer = navg.AppendChild();
+
+            writer.WriteStartElement(XmlConstants.EntityType);
+            writer.WriteAttributeString(XmlConstants.Name, entityType.Name);
+            if (entityType.BaseType != null)
+            {
+                writer.WriteAttributeString(XmlConstants.BaseType, entityType.BaseType);
+            }
+            writer.WriteEndElement();
 
             return entityType;
         }

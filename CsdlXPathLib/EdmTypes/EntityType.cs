@@ -10,6 +10,7 @@ namespace CsdlXPathLib.EdmTypes
     {
         public string Key { get; set; }
         public string Name { get; set; }
+        public string BaseType { get; set; }
         public List<EdmProperty> Properties { get; set; }
         public List<EdmNavigationProperty> NavigationProperties { get; set; }
     }
