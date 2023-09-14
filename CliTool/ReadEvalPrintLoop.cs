@@ -86,7 +86,7 @@ namespace CliTool
 
             if (!isValidFile)
             {
-                WriteErrorMessage("File path has not been set in this session");
+                Utils.WriteErrorMessage("File path has not been set in this session");
 
                 return false;
             }
@@ -104,7 +104,7 @@ namespace CliTool
             }
             else
             {
-                ApplyCachedNamedOption(commandText, parseResult, out command);
+                command = ApplyCachedNamedOption(commandText, parseResult);
             }
 
             AddCommandToCache(parseResult.CommandResult.Command);
@@ -136,10 +136,8 @@ namespace CliTool
             }
         }
 
-        private void ApplyCachedNamedOption(string commandText, ParseResult parseResult, out string command)
+        private string ApplyCachedNamedOption(string commandText, ParseResult parseResult)
         {
-            command = commandText;
-
             if (parseResult.CommandResult.Command is PropertiesCommand)
             {
                 if(!parseResult.HasOption(Utils.SelectNameOption))
@@ -148,17 +146,19 @@ namespace CliTool
                     {
                         if (cmd is EntityTypesCommand)
                         {
-                            command = string.Concat(commandText, " --entitytype ", this.cache.Select);
+                            commandText = string.Concat(commandText, " --entitytype ", this.cache.Select);
                             break;
                         }
                         if (cmd is ComplexTypesCommand)
                         {
-                            command = string.Concat(commandText, " --complextype ", this.cache.Select);
+                            commandText = string.Concat(commandText, " --complextype ", this.cache.Select);
                             break;
                         }
                     }
                 }
             }
+
+            return commandText;
         }
 
         private void AddCommandToCache(Command command)
@@ -204,22 +204,15 @@ namespace CliTool
                 }
                 else
                 {
-                    WriteErrorMessage("select command doesn't have --name option");
+                    Utils.WriteErrorMessage("select command doesn't have --name option");
                 }
             }
             else
             {
-                WriteErrorMessage("select command cannot be applied");
+                Utils.WriteErrorMessage("select command cannot be applied");
             }
 
             return false;
-        }
-
-        private void WriteErrorMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
         }
 
         private bool IsSelectCommand(CommandResult commandResult)
