@@ -1,5 +1,4 @@
 ﻿using CsdlXPathLib.EdmTypes;
-using System.Reflection.Metadata;
 using System.Xml;
 using System.Xml.XPath;
 
