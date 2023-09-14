@@ -32,7 +32,7 @@ namespace CliTool.Commands
 
             this.SetHandler((filePathOptionValue, nameOptionValue, baseTypeOptionValue) =>
             {
-                InvokeCommand(filePathOptionValue, nameOptionValue,);
+                InvokeCommand(filePathOptionValue, nameOptionValue, baseTypeOptionValue);
             },
             Utils.FilePathOption, nameOption, baseTypeOption);
         }
