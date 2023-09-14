@@ -55,6 +55,7 @@ namespace CliTool
             SingletonCommand singletonCommand = new SingletonCommand();
             ActionImportCommand actionimportCommand = new ActionImportCommand();
             FunctionImportCommand functionimportCommand = new FunctionImportCommand();
+            PropertyCommand propertyCommand = new PropertyCommand();
 
             showCommand.Add(entityTypesCommand);
             showCommand.Add(complexTypesCommand);
@@ -76,10 +77,12 @@ namespace CliTool
             addCommand.Add(singletonCommand);
             addCommand.Add(actionimportCommand);
             addCommand.Add(functionimportCommand);
+            addCommand.Add(propertyCommand);
 
             RootCommand app = new RootCommand {
                 showCommand,
-                selectCommand
+                selectCommand,
+                addCommand
             };
 
             return app;

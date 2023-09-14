@@ -134,9 +134,9 @@ namespace CsdlXPathLib
             writer.Close();
         }
 
-        public void AddProperty(EdmProperty property)
+        public void AddProperty(EdmProperty property, string name)
         {
-            string query = string.Format($"//default:EntityType");
+            string query = string.Format($"//default:EntityType[@Name='{name}']");
             XPathNodeIterator nodes = navigator.Select(query, this.namespaceManager);
 
             nodes.MoveNext();
