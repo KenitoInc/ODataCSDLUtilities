@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CliTool.Commands;
+using System.ComponentModel.Design;
 
 namespace CliTool
 {
@@ -30,46 +31,51 @@ namespace CliTool
         {
             ShowCommand showCommand = new ShowCommand();
             SelectCommand selectCommand = new SelectCommand();
+            AddCommand addCommand = new AddCommand();
 
+            // show subcommands
             EntityTypesCommand entityTypesCommand = new EntityTypesCommand();
-            EntityTypeCommand entityTypeCommand = new EntityTypeCommand();
             ComplexTypesCommand complexTypesCommand = new ComplexTypesCommand();
-            ComplexTypeCommand complexTypeCommand = new ComplexTypeCommand();
             EnumTypesCommand enumsCommand = new EnumTypesCommand();
-            EnumTypeCommand enumCommand = new EnumTypeCommand();
             FunctionsCommand functionsCommand = new FunctionsCommand();
-            FunctionCommand functionCommand = new FunctionCommand();
             ActionsCommand actionsCommand = new ActionsCommand();
-            ActionCommand actionCommand = new ActionCommand();
             EntitySetsCommand entitySetsCommand = new EntitySetsCommand();
-            EntitySetCommand entitySetCommand = new EntitySetCommand();
             SingletonsCommand singletonsCommand = new SingletonsCommand();
-            SingletonCommand singletonCommand = new SingletonCommand();
             ActionImportsCommand actionimportsCommand = new ActionImportsCommand();
-            ActionImportCommand actionimportCommand = new ActionImportCommand();
             FunctionImportsCommand functionimportsCommand = new FunctionImportsCommand();
-            FunctionImportCommand functionimportCommand = new FunctionImportCommand();
             PropertiesCommand propertiesCommand = new PropertiesCommand();
 
+            // Add subcommands
+            EntityTypeCommand entityTypeCommand = new EntityTypeCommand();
+            ComplexTypeCommand complexTypeCommand = new ComplexTypeCommand();
+            EnumTypeCommand enumCommand = new EnumTypeCommand();
+            FunctionCommand functionCommand = new FunctionCommand();
+            ActionCommand actionCommand = new ActionCommand();
+            EntitySetCommand entitySetCommand = new EntitySetCommand();
+            SingletonCommand singletonCommand = new SingletonCommand();
+            ActionImportCommand actionimportCommand = new ActionImportCommand();
+            FunctionImportCommand functionimportCommand = new FunctionImportCommand();
+
             showCommand.Add(entityTypesCommand);
-            showCommand.Add(entityTypeCommand);
             showCommand.Add(complexTypesCommand);
-            showCommand.Add(complexTypeCommand);
             showCommand.Add(enumsCommand);
-            showCommand.Add(enumCommand);
             showCommand.Add(functionsCommand);
-            showCommand.Add(functionCommand);
             showCommand.Add(actionsCommand);
-            showCommand.Add(actionCommand);
             showCommand.Add(entitySetsCommand);
-            showCommand.Add(entitySetCommand);
             showCommand.Add(singletonsCommand);
-            showCommand.Add(singletonCommand);
             showCommand.Add(actionimportsCommand);
-            showCommand.Add(actionimportCommand);
             showCommand.Add(functionimportsCommand);
-            showCommand.Add(functionimportCommand);
             showCommand.Add(propertiesCommand);
+
+            addCommand.Add(entityTypeCommand);
+            addCommand.Add(complexTypeCommand);
+            addCommand.Add(enumCommand);
+            addCommand.Add(functionCommand);
+            addCommand.Add(actionCommand);
+            addCommand.Add(entitySetCommand);
+            addCommand.Add(singletonCommand);
+            addCommand.Add(actionimportCommand);
+            addCommand.Add(functionimportCommand);
 
             RootCommand app = new RootCommand {
                 showCommand,
