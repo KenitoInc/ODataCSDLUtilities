@@ -91,6 +91,8 @@ namespace CliTool
             }
             else
             {
+                // TODO: check if file is in cache
+                // Console message if file is missing
                 commandText = string.Concat(commandText, " --file ", this.cache.File);
             }
 
@@ -155,6 +157,10 @@ namespace CliTool
                 )
             {
                 this.cache.Select = parseResult.GetValueForOption(Utils.SelectNameOption)?.ToString();
+            }
+            else
+            {
+                // TODO: Console message
             }
         }
 
