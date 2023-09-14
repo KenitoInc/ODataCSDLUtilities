@@ -1,5 +1,6 @@
 ﻿using CsdlXPathLib.EdmTypes;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.XPath;
 
 namespace CsdlXPathLib
@@ -113,23 +114,50 @@ namespace CsdlXPathLib
             return entityType;
         }
 
-        public EntityType AddEntityType(EntityType entityType)
+        public void AddEntityType(EntityType entityType)
         {
             string query = string.Format($"//default:EntityType");
             XPathNodeIterator nodes = navigator.Select(query, this.namespaceManager);
 
+            nodes.MoveNext();
             var navg = nodes.Current;
-            var writer = navg.AppendChild();
+            var writer = navg.InsertBefore();
 
             writer.WriteStartElement(XmlConstants.EntityType);
             writer.WriteAttributeString(XmlConstants.Name, entityType.Name);
-            if (entityType.BaseType != null)
+            if (!string.IsNullOrEmpty(entityType.BaseType)) 
             {
                 writer.WriteAttributeString(XmlConstants.BaseType, entityType.BaseType);
             }
             writer.WriteEndElement();
 
-            return entityType;
+            writer.Close();
+        }
+
+        public void AddProperty(EdmProperty property)
+        {
+            string query = string.Format($"//default:EntityType");
+            XPathNodeIterator nodes = navigator.Select(query, this.namespaceManager);
+
+            nodes.MoveNext();
+            var navg = nodes.Current;
+            var writer = navg.AppendChild();
+
+            writer.WriteStartElement("Property");
+            writer.WriteAttributeString(XmlConstants.Name, property.Name);
+            writer.WriteAttributeString(XmlConstants.Type, property.Type);
+
+            if (!property.Nullable) 
+            {
+                writer.WriteAttributeString(XmlConstants.Nullable, property.Nullable.ToString());
+            }
+            if(!string.IsNullOrEmpty(property.MaxLength))
+            {
+                writer.WriteAttributeString(XmlConstants.MaxLength, property.MaxLength);
+            }
+            writer.WriteEndElement();
+
+            writer.Close();
         }
 
         public List<ComplexType> GetComplexTypes()
