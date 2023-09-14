@@ -12,7 +12,7 @@ namespace CliTool.Commands
     internal class EntityTypeCommand : Command
     {
         public EntityTypeCommand()
-            : base("entitytype", "command to show an entity type in the OData csdl xml file.")
+            : base("entitytype", "command to add an entity type to the OData csdl xml file.")
         {
             Option<string> nameOption = new Option<string>(new[] { "--name", "-n" })
             {
@@ -21,16 +21,23 @@ namespace CliTool.Commands
                 IsRequired = true
             };
 
-            Add(nameOption);
-
-            this.SetHandler((filePathOptionValue, nameOptionValue) =>
+            Option<string> baseTypeOption = new Option<string>(new[] { "--basetype", "-t" })
             {
-                InvokeCommand(filePathOptionValue, nameOptionValue);
+                Name = "type",
+                Description = "The basetype of the entity type."
+            };
+
+            Add(nameOption);
+            Add(baseTypeOption);
+
+            this.SetHandler((filePathOptionValue, nameOptionValue, baseTypeOptionValue) =>
+            {
+                InvokeCommand(filePathOptionValue, nameOptionValue,);
             },
-            Utils.FilePathOption, nameOption);
+            Utils.FilePathOption, nameOption, baseTypeOption);
         }
 
-        private static void InvokeCommand(string filePath, string name)
+        private static void InvokeCommand(string filePath, string name, string baseType)
         {
             if (filePath == null)
             {
@@ -47,11 +54,12 @@ namespace CliTool.Commands
                 return;
             }
 
+            EntityType entityType = new EntityType();
+            entityType.Name = name;
+            entityType.BaseType= baseType;
 
-            CsdlXPath csdlXPath = new CsdlXPath(filePath);
-            EntityType entityType = csdlXPath.GetEntityType(name);
-
-            Console.WriteLine($"EntityType Name: {entityType.Name}, Key: {entityType.Key}");
+            CsdlXPath csdlXPath = new CsdlXPath(filePath, /* isReadOnly */ false);
+            csdlXPath.AddEntityType(entityType);
         }
     }
 }
