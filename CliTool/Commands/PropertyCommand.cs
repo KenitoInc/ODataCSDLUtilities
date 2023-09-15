@@ -9,38 +9,40 @@ namespace CliTool.Commands
         public PropertyCommand()
             : base("property", "command to add a property of a type in the OData csdl xml file.")
         {
-            Option<string> entityTypeOption = new Option<string>(new[] { "--entitytype", "--etype" })
+            Option<string> entityTypeOption = new Option<string>(new[] { "--entitytype", "-etype" })
             {
                 Name = "entitytype",
                 Description = "The name of the entity type.",
             };
 
-            Option<string> complexTypeOption = new Option<string>(new[] { "--complextype", "--ctype" })
+            Option<string> complexTypeOption = new Option<string>(new[] { "--complextype", "-ctype" })
             {
                 Name = "complextype",
                 Description = "The name of the complex type.",
             };
 
-            Option<string> nameOption = new Option<string>(new[] { "--name", "--n" })
+            Option<string> nameOption = new Option<string>(new[] { "--name", "-n" })
             {
                 Name = "name",
                 Description = "The name of the property.",
                 IsRequired = true,
             };
 
-            Option<bool> keyOption = new Option<bool>(new[] { "--key", "--k" })
+            Option<bool> keyOption = new Option<bool>(new[] { "--key", "-k" })
             {
                 Name = "key",
                 Description = "If the property is a key.",
             };
 
-            Option<bool> nullableOption = new Option<bool>(new[] { "--nullable", "--nb" })
+            Option<bool> nullableOption = new Option<bool>(new[] { "--nullable", "-nb" })
             {
                 Name = "nullable",
                 Description = "If the property is nullable.",
             };
 
-            Option<string> typeOption = new Option<string>(new[] { "--type", "--t" })
+            nullableOption.SetDefaultValue(true);
+
+            Option<string> typeOption = new Option<string>(new[] { "--type", "-t" })
             {
                 Name = "type",
                 Description = "The type of the property.",

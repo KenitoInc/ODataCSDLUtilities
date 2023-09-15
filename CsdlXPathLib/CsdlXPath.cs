@@ -11,8 +11,10 @@ namespace CsdlXPathLib
         private XmlDocument xmlDocument;
         private XPathNavigator navigator;
         private XmlNamespaceManager namespaceManager;
+        private string filePath;
         public CsdlXPath(string filePath, bool isReadOnly=true)
         {
+            this.filePath = filePath;
             if (isReadOnly)
             {
                 xPathDocument = new XPathDocument(filePath);
@@ -132,6 +134,8 @@ namespace CsdlXPathLib
             writer.WriteEndElement();
 
             writer.Close();
+
+            this.xmlDocument.Save(this.filePath);
         }
 
         public void AddProperty(EdmProperty property, string name)
@@ -158,6 +162,8 @@ namespace CsdlXPathLib
             writer.WriteEndElement();
 
             writer.Close();
+
+            this.xmlDocument.Save(this.filePath);
         }
 
         public List<ComplexType> GetComplexTypes()

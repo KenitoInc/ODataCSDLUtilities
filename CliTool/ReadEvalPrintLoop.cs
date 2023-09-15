@@ -138,7 +138,8 @@ namespace CliTool
 
         private string ApplyCachedNamedOption(string commandText, ParseResult parseResult)
         {
-            if (parseResult.CommandResult.Command is PropertiesCommand)
+            if (parseResult.CommandResult.Command is PropertiesCommand ||
+                parseResult.CommandResult.Command is PropertyCommand)
             {
                 if(!parseResult.HasOption(Utils.SelectNameOption))
                 {
@@ -166,7 +167,8 @@ namespace CliTool
             if (
                 command is EntityTypesCommand ||
                 command is ComplexTypesCommand ||
-                command is SelectCommand
+                command is SelectCommand ||
+                command is EntityTypeCommand
                 )
             {
                 Command cmd;
@@ -186,6 +188,7 @@ namespace CliTool
 
             if (
                 command is EntityTypesCommand ||
+                command is EntityTypeCommand ||
                 command is ComplexTypesCommand ||
                 command is EnumTypesCommand ||
                 command is FunctionsCommand ||
